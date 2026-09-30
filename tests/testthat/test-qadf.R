@@ -63,3 +63,25 @@ test_that("print.qadf is silent (uses message, not cat/print)", {
   out <- capture.output(print(res))
   expect_equal(length(out), 0L)
 })
+
+test_that("rho(tau) is the level autoregressive coefficient", {
+  set.seed(11)
+  y <- cumsum(rnorm(120))
+  res <- qadf(y, tau = 0.5, model = "c", max_lags = 2)
+  expect_true(res$rho_tau > 0.7 && res$rho_tau < 1.1)
+  expect_equal(res$coef_stat, res$nobs * (res$rho_tau - 1))
+})
+
+test_that("a stationary series is rejected at the median", {
+  set.seed(1)
+  z <- as.numeric(arima.sim(list(ar = 0.5), 200))
+  res <- qadf(z, tau = 0.5, model = "c")
+  expect_lt(res$statistic, res$critical_values[["cv5"]])
+})
+
+test_that("critical values follow delta^2", {
+  cv_lo <- qadf:::.qadf_critical_values(0.1, "c")
+  cv_hi <- qadf:::.qadf_critical_values(1.0, "c")
+  expect_equal(unname(cv_hi), c(-3.4336, -2.8621, -2.5671))
+  expect_true(all(cv_lo > cv_hi))
+})

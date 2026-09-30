@@ -42,7 +42,7 @@ Koenker, R. and Xiao, Z. (2004). Unit Root Quantile Autoregression Inference.
 
 Hansen, B. E. (1995). Rethinking the Univariate Approach to Unit Root Tests.
 *Econometric Theory*, 11(5), 1148–1171.
-<https://doi.org/10.1017/S0266466600009713>
+<https://doi.org/10.1017/S0266466600009993>
 
 ## License
 
